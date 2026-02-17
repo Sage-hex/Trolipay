@@ -3,6 +3,9 @@ import pytest
 pytest.importorskip("fastapi")
 pytest.importorskip("sqlmodel")
 pytest.importorskip("jose")
+pytest.importorskip("sqlalchemy")
+
+from sqlalchemy.pool import StaticPool
 
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
@@ -12,7 +15,11 @@ from app.main import app
 
 
 def test_register_login_me_flow_and_error_shape() -> None:
-    engine = create_engine("sqlite://", connect_args={"check_same_thread": False})
+    engine = create_engine(
+        "sqlite://",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
     SQLModel.metadata.create_all(engine)
 
     def override_get_session():

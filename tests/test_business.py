@@ -3,6 +3,9 @@ import pytest
 pytest.importorskip("fastapi")
 pytest.importorskip("sqlmodel")
 pytest.importorskip("jose")
+pytest.importorskip("sqlalchemy")
+
+from sqlalchemy.pool import StaticPool
 
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine
@@ -30,9 +33,18 @@ def _auth_headers(client: TestClient) -> dict[str, str]:
     return {"Authorization": f"Bearer {token}"}
 
 
-def test_get_business_authenticated() -> None:
-    engine = create_engine("sqlite://", connect_args={"check_same_thread": False})
+def _test_engine():
+    engine = create_engine(
+        "sqlite://",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
     SQLModel.metadata.create_all(engine)
+    return engine
+
+
+def test_get_business_authenticated() -> None:
+    engine = _test_engine()
 
     def override_get_session():
         with Session(engine) as session:
@@ -53,8 +65,7 @@ def test_get_business_authenticated() -> None:
 
 
 def test_patch_business_updates_name() -> None:
-    engine = create_engine("sqlite://", connect_args={"check_same_thread": False})
-    SQLModel.metadata.create_all(engine)
+    engine = _test_engine()
 
     def override_get_session():
         with Session(engine) as session:
@@ -72,8 +83,7 @@ def test_patch_business_updates_name() -> None:
 
 
 def test_patch_business_store_code_rejected() -> None:
-    engine = create_engine("sqlite://", connect_args={"check_same_thread": False})
-    SQLModel.metadata.create_all(engine)
+    engine = _test_engine()
 
     def override_get_session():
         with Session(engine) as session:
