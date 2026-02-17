@@ -6,8 +6,6 @@ from passlib.context import CryptContext
 from app.core.config import get_settings
 from app.core.errors import AuthError
 
-from passlib.context import CryptContext
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
