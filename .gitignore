@@ -1,0 +1,16 @@
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local database / runtime artifacts
+*.db
+*.sqlite3
+
+# Python caches
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Local media uploads
+media/
