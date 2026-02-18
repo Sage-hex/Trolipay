@@ -3,7 +3,7 @@ from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-ENV_FILES = (".env", ".env.local", ".env.example")
+ENV_FILES = (".env", ".env.local")
 
 
 class Settings(BaseSettings):
