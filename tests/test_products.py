@@ -8,25 +8,18 @@ pytest.importorskip("jose")
 pytest.importorskip("passlib")
 pytest.importorskip("sqlalchemy")
 
-from sqlalchemy.pool import StaticPool
-
 from fastapi.testclient import TestClient
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session
 
 from app.core.auth import get_current_business_id
 from app.core.db import get_session
 from app.main import app
+from tests.db_test_utils import create_test_engine
 from app.models.business import Business
 
 
 def _test_engine():
-    engine = create_engine(
-        "sqlite://",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    SQLModel.metadata.create_all(engine)
-    return engine
+    return create_test_engine()
 
 
 def _seed_business(engine, business_id: int, name: str, store_code: str) -> None:

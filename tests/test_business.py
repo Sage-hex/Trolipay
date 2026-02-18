@@ -5,13 +5,12 @@ pytest.importorskip("sqlmodel")
 pytest.importorskip("jose")
 pytest.importorskip("sqlalchemy")
 
-from sqlalchemy.pool import StaticPool
-
 from fastapi.testclient import TestClient
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import Session
 
 from app.core.db import get_session
 from app.main import app
+from tests.db_test_utils import create_test_engine
 
 
 def _auth_headers(client: TestClient) -> dict[str, str]:
@@ -34,13 +33,7 @@ def _auth_headers(client: TestClient) -> dict[str, str]:
 
 
 def _test_engine():
-    engine = create_engine(
-        "sqlite://",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    SQLModel.metadata.create_all(engine)
-    return engine
+    return create_test_engine()
 
 
 def test_get_business_authenticated() -> None:
