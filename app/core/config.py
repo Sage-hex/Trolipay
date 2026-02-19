@@ -17,10 +17,12 @@ class Settings(BaseSettings):
     test_database_url: str = ""
     jwt_secret: str = "change-me"
     paystack_secret_key: str = ""
+    paystack_public_key: str = ""
     paystack_webhook_token: str = ""
     telegram_webhook_token: str = ""
     whatsapp_verify_token: str = ""
     whatsapp_app_secret: str = ""
+    gemini_api_key: str = ""
     media_dir: str = "media"
 
 
