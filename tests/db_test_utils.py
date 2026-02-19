@@ -1,5 +1,3 @@
-import os
-
 from sqlalchemy.pool import StaticPool
 from sqlmodel import SQLModel, create_engine
 
@@ -14,9 +12,7 @@ def create_test_engine():
     """
     settings = get_settings()
     database_url = (settings.test_database_url or "").strip()
-    use_external = os.getenv("USE_EXTERNAL_TEST_DB", "").strip().lower() in {"1", "true", "yes", "on"}
-
-    if use_external and database_url:
+    if settings.use_external_test_db and database_url:
         engine = create_engine(database_url, echo=False)
     else:
         engine = create_engine(
