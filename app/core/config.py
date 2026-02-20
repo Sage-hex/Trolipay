@@ -25,6 +25,11 @@ class Settings(BaseSettings):
     whatsapp_app_secret: str = ""
     gemini_api_key: str = ""
     media_dir: str = "media"
+    cloudflare_account_id: str = ""
+    r2_bucket_name: str = ""
+    r2_access_key_id: str = ""
+    r2_secret_access_key: str = ""
+    r2_endpoint_url: str = ""
 
 
 @lru_cache
